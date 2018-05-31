@@ -53,7 +53,7 @@ public class GifWriter {
         int colorCount = colorMap.getSize();
         int colorCountRounded = Utils.getNearestGreaterOrEqualPowerOfTwo(colorCount);
         if (colorCountRounded == 1) {
-            colorCountRounded = 2;
+            colorCountRounded = 2;   
         }
         
         LogicalScreenDesriptorBuilder logicalScreenDescriptor
@@ -74,7 +74,20 @@ public class GifWriter {
         output.write(imageDescriptor.get());
 
         // output.write(compressedIndexStream);
-
+        int [] colorIndexes = getColorIndexes (image, colorMap);
+        Fragmenter frag = new Fragmenter ();
+        BitPacker bitPacker = new BitPacker(frag);
+        LzwCompressor.compress (colorIndexes, bitPacker);
+		
+		
+		output.write(frag.get());
+		
         output.write(GIF_TERMINATOR);
     }
+
+	private static int[] getColorIndexes(RasterImage image, ColorMap colorMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
